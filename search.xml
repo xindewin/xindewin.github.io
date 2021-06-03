@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>blog1 搭建博客中遇到的问题</title>
-    <url>/2021/03/15/blog1-%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="1-在hexo-clean-hexo-g-hexo-d三步后出现404页面"><a href="#1-在hexo-clean-hexo-g-hexo-d三步后出现404页面" class="headerlink" title="1.在hexo clean+hexo g+hexo d三步后出现404页面"></a>1.在hexo clean+hexo g+hexo d三步后出现404页面</h2><p>​     其实只是少做了一步操作，就是在github的setting（翻到底层）在github page中的custom domian中输入自己的域名即可，每次进行hexo clean操作后都要重复该操作，不过也可能是因为我绑定了属于自己的域名的缘故。</p>
-<h2 id="2-在hexo-clean时或者hexo-g时出现指向冒号的报错"><a href="#2-在hexo-clean时或者hexo-g时出现指向冒号的报错" class="headerlink" title="2.在hexo clean时或者hexo g时出现指向冒号的报错"></a>2.在hexo clean时或者hexo g时出现指向冒号的报错</h2><p>​     一般出现这种错误是因为冒号后面没有打空格，但是确实后面打空格了，但还是报错，最终无法再删掉了blog文件，再来一次就ok了。</p>
-<h2 id="3-域名绑定"><a href="#3-域名绑定" class="headerlink" title="3.域名绑定"></a>3.域名绑定</h2><p>​     看了各种教程，其实只需要搞定两个地方就行，一是在域名解析器中加入CANEM记录，前面一格填@即可，填@域名为xindewin.cn;www则为<a href="http://www.xindewin,二是在github/">www.xindewin，二是在github</a> page中的custom domian中输入自己的域名即可。会有一小会的延迟，不要着急。记得域名要实名，不然也是不成功的。</p>
-<h2 id="4-hexo-g部署文章时报错-err-YAMLException-can-not-read-a-block-mapping-entry-a-multiline-key-may-not-be-an-implicit-key-at-line-4-column-1"><a href="#4-hexo-g部署文章时报错-err-YAMLException-can-not-read-a-block-mapping-entry-a-multiline-key-may-not-be-an-implicit-key-at-line-4-column-1" class="headerlink" title="4.hexo g部署文章时报错 err: YAMLException: can not read a block mapping entry; a multiline key may not be an implicit key at line 4, column 1:"></a>4.hexo g部署文章时报错 err: YAMLException: can not read a block mapping entry; a multiline key may not be an implicit key at line 4, column 1:</h2><p>（空行）</p>
-<p>  其实这个问题line 4多了一排空行，不要纠结at\node_modules\hexo-front-matter\node_modules\js-yaml\lib\js-yaml\loader.js之类的文字。</p>
-<p><strong>还没下载图片插件，第一篇blog写得比较简陋，不过也是一个好的开始，希望之后能耐心写下更多的学习或者经验内容，也很感谢azuki，在我网络搜寻无果解决不了问题的时候给予了我许多帮助，而且博客一开始也是他花时间带我下的，不然我一个小白也不知道还可以写博客，哈哈。</strong>
-     </p>
-]]></content>
-      <tags>
-        <tag>hexo</tag>
-        <tag>blog</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/2021/03/11/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -33,5 +17,21 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>blog1 搭建博客中遇到的问题</title>
+    <url>/2021/03/15/blog1-%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="1-在hexo-clean-hexo-g-hexo-d三步后出现404页面"><a href="#1-在hexo-clean-hexo-g-hexo-d三步后出现404页面" class="headerlink" title="1.在hexo clean+hexo g+hexo d三步后出现404页面"></a>1.在hexo clean+hexo g+hexo d三步后出现404页面</h2><p>​     其实只是少做了一步操作，就是在github的setting（翻到底层）在github page中的custom domian中输入自己的域名即可，每次进行hexo clean操作后都要重复该操作，不过也可能是因为我绑定了属于自己的域名的缘故。</p>
+<h2 id="2-在hexo-clean时或者hexo-g时出现指向冒号的报错"><a href="#2-在hexo-clean时或者hexo-g时出现指向冒号的报错" class="headerlink" title="2.在hexo clean时或者hexo g时出现指向冒号的报错"></a>2.在hexo clean时或者hexo g时出现指向冒号的报错</h2><p>​     一般出现这种错误是因为冒号后面没有打空格，但是确实后面打空格了，但还是报错，最终无法再删掉了blog文件，再来一次就ok了。</p>
+<h2 id="3-域名绑定"><a href="#3-域名绑定" class="headerlink" title="3.域名绑定"></a>3.域名绑定</h2><p>​     看了各种教程，其实只需要搞定两个地方就行，一是在域名解析器中加入CANEM记录，前面一格填@即可，填@域名为xindewin.cn;www则为<a href="http://www.xindewin,二是在github/">www.xindewin，二是在github</a> page中的custom domian中输入自己的域名即可。会有一小会的延迟，不要着急。记得域名要实名，不然也是不成功的。</p>
+<h2 id="4-hexo-g部署文章时报错-err-YAMLException-can-not-read-a-block-mapping-entry-a-multiline-key-may-not-be-an-implicit-key-at-line-4-column-1"><a href="#4-hexo-g部署文章时报错-err-YAMLException-can-not-read-a-block-mapping-entry-a-multiline-key-may-not-be-an-implicit-key-at-line-4-column-1" class="headerlink" title="4.hexo g部署文章时报错 err: YAMLException: can not read a block mapping entry; a multiline key may not be an implicit key at line 4, column 1:"></a>4.hexo g部署文章时报错 err: YAMLException: can not read a block mapping entry; a multiline key may not be an implicit key at line 4, column 1:</h2><p>（空行）</p>
+<p>  其实这个问题line 4多了一排空行，不要纠结at\node_modules\hexo-front-matter\node_modules\js-yaml\lib\js-yaml\loader.js之类的文字。</p>
+<p><strong>还没下载图片插件，第一篇blog写得比较简陋，不过也是一个好的开始，希望之后能耐心写下更多的学习或者经验内容，也很感谢azuki，在我网络搜寻无果解决不了问题的时候给予了我许多帮助，而且博客一开始也是他花时间带我下的，不然我一个小白也不知道还可以写博客，哈哈。</strong>
+     </p>
+]]></content>
+      <tags>
+        <tag>hexo</tag>
+        <tag>blog</tag>
+      </tags>
   </entry>
 </search>
